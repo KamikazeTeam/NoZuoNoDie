@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<title>Newsfinder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+.w3-sidenav a,.w3-sidenav h4 {padding:12px;}
+.w3-navbar a {padding-top:12px !important;padding-bottom:12px !important;}
+</style>
+<body>
+<!-- Navbar -->
+<ul class="w3-navbar w3-theme w3-top w3-left-align w3-large" style="z-index:4;">
+  <li class="w3-opennav w3-right w3-hide-large">
+    <a class="w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()">
+      <i class="fa fa-bars"></i></a></li>
+  <li><a href="#" class="w3-theme-l1">Newsfinder</a></li>
+  <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
+</ul>
+<!-- Sidenav -->
+<nav class="w3-sidenav w3-collapse w3-theme-l5 w3-left" style="z-index:3;width:30%;" id="mySidenav">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="close menu">
+    <i class="fa fa-remove"></i></a>
+  <ol>
+  {% for inew in range(newslist|length) %}
+    <li><a class='w3-padding-tiny w3-hover-grey news' href='#' id={{inew}}>
+      {{newslist[inew][0]+"|"+newslist[inew][1]}}</br>{{"("+newslist[inew][2]+"|"+newslist[inew][3]+")"}}
+    </a></li>
+  {% endfor %}
+  </ol></br></br></br>
+</nav>
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+<!-- Maincontent -->
+<div class="w3-main" style="z-index:2;margin-left:30%;margin-top:50px;">
+  <div class="w3-accordion w3-theme-l5" id="oldnewslist"><ol>
+    {% for iold in range(oldlists[0]|length) %}
+      <li><button onclick="Openpic('{{iold+1000}}')" class="w3-btn-block w3-left-align w3-theme-l5">
+        {{oldlists[0][iold][0]+"|"+oldlists[0][iold][1]}}</br>{{"("+oldlists[0][iold][2]+"|"+oldlists[0][iold][3]+")"}}
+      </button></li>
+      <div id='{{iold+1000}}' class="w3-accordion-content w3-container"></br>
+      {{figlist[iold]|safe}}
+      </div>
+    {% endfor %} 
+  </ol></br></br></br></div>
+  <footer>
+    <div class="w3-container w3-theme w3-bottom"><p>Powered by Hitachi</p></div>
+  </footer>
+</div>
+<!-- END MAIN -->
+<script>
+var mySidenav = document.getElementById("mySidenav");// Get the Sidenav
+var overlayBg = document.getElementById("myOverlay");// Get the DIV with overlay effect
+function w3_open() {// Toggle between showing and hiding the sidenav, and add overlay effect
+  if (mySidenav.style.display === 'block') {
+    mySidenav.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidenav.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+function w3_close() {// Close the sidenav with the close button
+  mySidenav.style.display = "none";
+  overlayBg.style.display = "none";
+}
+function Openpic(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><!-- load the jQuery -->
+<script>
+var jstickers  = {{tickers|tojson}}
+var jsnewslist = {{newslist|tojson}}
+var jsoldlists = {{oldlists|tojson}}
+$(document).ready(function(){//jQuery functions
+  $(".news").click(function(event){
+    $.get(event.target.id, function(data, status){
+      //$.getJSON(event.target.id, function(data){ var pictures = data.figlist; console.log(pictures); });//$(data.release).each(function(){figlist[iold]})
+      //$.get(event.target.id, function(data){ var pictures = data.figlist; console.log(pictures); });
+      //console.log(pictures);
+      //alert("Data: " + data + "\nStatus: " + status);
+      inewnow=event.target.id;
+      $("#oldnewslist").empty();
+      oldnews = ""
+      oldnews += "<ol>"
+      for (var iold=0;iold<jsoldlists[inewnow].length;iold++){
+        oldnews += "<li><button onclick='Openpic("+(iold+1000)+")' class='w3-btn-block w3-left-align w3-theme-l5'>"//console.log(oldnews);
+        oldnews += jsoldlists[inewnow][iold][0]+'|'+jsoldlists[inewnow][iold][1];
+        oldnews += "</br>"+'('+jsoldlists[inewnow][iold][2]+'|'+jsoldlists[inewnow][iold][3]+')';
+        oldnews += "</button></li>";
+        oldnews += "<div id="+(iold+1000)+" class='w3-accordion-content w3-container'></br>"
+        picture  = data.figlist[iold];
+        //console.log(picture);
+        oldnews += picture;
+        oldnews += "</div>";
+      }
+      oldnews += "</ol></br></br></br>"
+      $("#oldnewslist").append(oldnews);
+
+
+    });
+  });
+});
+</script>
+</body>
+</html>
+
+
