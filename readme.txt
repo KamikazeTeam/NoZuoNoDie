@@ -1,17 +1,17 @@
-HkarDemo�̎��s���Ԃ́F
-�P�D1)./STSJP
-    2)python3 getDailyNews.py (CNN�̔����Keyword���x���̂ŁA���news�͑��7�����炢�|����̂ŁA���̐ݒ�ł͂Ȃ��A�K���ɐ����i���ăe�X�g��������X�����Ǝv���܂��B)
-�Q�D1)./STSJPMS/exps/exp2016
-    2)bash expeval (�P���ς݂̃��f����p����news�̗ގ��x�𔻒肵�܂��B�ގ��x�̐��l��keyword hit number�̑���ɋL�^����܂��B���̐ݒ�ł͗ގ��x1.3�ȏ��news�𒊏o���Ă��܂��B)
-�R�D1)./STSJP
-    2)python3 rankByPrices.py (price�ω��ŗގ��L�����\�[�g����)
-�S�D1)./STSJP
-    2)python graph.py (web demo���N�����܂��B)
+実行順番は：
+１．1)./STSJP
+    2)python3 getDailyNews.py (CNNの判定はKeywordより遅いので、一つのnewsは大体7分ぐらい掛かるので、今の設定ではなく、適当に数を絞ってテストする方が宜しいと思います。)
+２．1)./STSJPMS/exps/exp2016
+    2)bash expeval (訓練済みのモデルを用いてnewsの類似度を判定します。類似度の数値はkeyword hit numberの代わりに記録されます。今の設定では類似度1.3以上のnewsを抽出しています。)
+３．1)./STSJP
+    2)python3 rankByPrices.py (price変化で類似記事をソートする)
+４．1)./STSJP
+    2)python graph.py (web demoを起動します。)
 ----------------------------------------------------
-�V���ȃ��f�����P����������΁F
-�T�D1)./STSJPMS/exps/exp2016
-    2)bash exptrain (./STSJPMS/data/sts/2016�Ɋi�[����Ă���P���f�[�^��p���ă��f�����P������A���݂̌P�����ʂ͖�0.45�ł��B)
+新たなモデルを訓練したければ：
+５．1)./STSJPMS/exps/exp2016
+    2)bash exptrain (./STSJPMS/data/sts/2016に格納されている訓練データを用いてモデルを訓練する、現在の訓練結果は約0.45です。)
 
 
 
-�ގ�news�̗�Fsimresult�ɎQ�l
+類似newsの例：simresultに参考
