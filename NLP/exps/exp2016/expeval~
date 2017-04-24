@@ -1,3 +1,0 @@
-#!/bin/bash
-
-../tools/eval.py mycnnjp sts 2016/train.tsv 2016/valid.tsv 2016/test.tsv embname=jawiki embdim=200 fweight=-643481b6a77dfb2f-01

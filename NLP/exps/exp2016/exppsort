@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for file in ./*.tsv
-do
-  ../psort.py $file
-done
-

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-../tools/train.py myavgjp sts 2016/train.tsv 2016/valid.tsv 2016/test.tsv nb_runs=4 embname=jawiki embdim=200 #nb_epoch=120 patience=120 #showbatchs=1 #debug=True nb_epoch=1 embname=debug embdim=50 
-
-../tools/train.py mycnnjp sts 2016/train.tsv 2016/valid.tsv 2016/test.tsv nb_runs=4 embname=jawiki embdim=200 #nb_epoch=120 patience=120 #showbatchs=1 #debug=True nb_epoch=1 embname=debug embdim=50
-
